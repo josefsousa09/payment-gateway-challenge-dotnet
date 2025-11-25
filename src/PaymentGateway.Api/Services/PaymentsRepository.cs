@@ -1,17 +1,28 @@
-﻿using PaymentGateway.Api.Models.Responses;
+﻿using PaymentGateway.Api.Models.Payment.Responses;
 
 namespace PaymentGateway.Api.Services;
 
 public class PaymentsRepository
 {
-    public List<PostPaymentResponse> Payments = new();
+    public List<GetPaymentResponse> Payments = new();
     
     public void Add(PostPaymentResponse payment)
     {
-        Payments.Add(payment);
+        var paymentRecord = new GetPaymentResponse
+        {
+            Id = payment.Id,
+            Status = payment.Status,
+            CardNumberLastFour = payment.CardNumberLastFour,
+            ExpiryMonth = payment.ExpiryMonth,
+            ExpiryYear = payment.ExpiryYear,
+            Currency = payment.Currency,
+            Amount = payment.Amount
+        };
+
+        Payments.Add(paymentRecord);
     }
 
-    public PostPaymentResponse Get(Guid id)
+    public GetPaymentResponse Get(Guid id)
     {
         return Payments.FirstOrDefault(p => p.Id == id);
     }
