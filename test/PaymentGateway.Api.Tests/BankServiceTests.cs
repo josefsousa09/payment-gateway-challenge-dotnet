@@ -42,7 +42,7 @@ namespace PaymentGateway.Api.Tests
             Assert.NotEmpty(result.AuthorizationCode);
         }
 
-        
+
 
         [Theory]
         [InlineData("1234567890123452")]
@@ -127,7 +127,24 @@ namespace PaymentGateway.Api.Tests
             // Assert
             Assert.NotNull(result);
             Assert.False(result.Authorized);
-            
+
         }
+
+        [Fact]
+        public async Task HandlesErrorAndThrows()
+        {
+            PostPaymentRequest request = new()
+            {
+                CardNumber = "abc",
+                ExpiryMonth = _random.Next(1, 12),
+                ExpiryYear = _random.Next(2026, 2033),
+                Currency = "USD",
+                Amount = _random.Next(1, 10000),
+                Cvv = "999"
+            };
+
+            await Assert.ThrowsAsync<HttpRequestException>(async () => await _bankService.ProcessPaymentAsync(request));
+        }
+
     }
 }

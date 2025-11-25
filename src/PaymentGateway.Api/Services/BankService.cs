@@ -16,8 +16,8 @@ public class BankService : IBankService
 
     public async Task<BankAuthorisationResponse> ProcessPaymentAsync(PostPaymentRequest request)
     {
-        try
-        {
+        
+        
             var bankRequest = new
             {
                 card_number = request.CardNumber,
@@ -54,9 +54,6 @@ public class BankService : IBankService
 
 
         }
-        catch (Exception)
-        {
-            throw;
-        }
+        
     }
-}
+

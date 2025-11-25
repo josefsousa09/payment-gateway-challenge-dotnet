@@ -7,6 +7,7 @@
 - Separation of concerns: Controllers handle HTTP, services handle business logic
 - Decoupled model validation with models
 - SOLID principles focused: Single responsibility, Interface segregation and Substitution principles.
+- Used record types where appropriate for immutable data models.
 
 ### Payment Request Validation
 Payment request card validation handled in PostPaymentRequest via custom validators in the PostPaymentRequest.
