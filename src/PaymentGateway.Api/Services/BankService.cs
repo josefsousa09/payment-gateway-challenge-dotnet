@@ -1,4 +1,5 @@
 using PaymentGateway.Api.Models;
+using PaymentGateway.Api.Models.Bank.Requests;
 using PaymentGateway.Api.Models.Bank.Responses;
 using PaymentGateway.Api.Models.Payment.Requests;
 using PaymentGateway.Api.Models.Payment.Responses;
@@ -18,13 +19,13 @@ public class BankService : IBankService
     {
         
         
-            var bankRequest = new
+            var bankRequest = new BankAuthorisationRequest
             {
-                card_number = request.CardNumber,
-                expiry_date = $"{request.ExpiryMonth:D2}/{request.ExpiryYear}",
-                currency = request.Currency,
-                amount = request.Amount,
-                cvv = request.Cvv
+                CardNumber = request.CardNumber,
+                ExpiryDate = $"{request.ExpiryMonth:D2}/{request.ExpiryYear}",
+                Currency = request.Currency,
+                Amount = request.Amount,
+                Cvv = request.Cvv
             };
 
 
@@ -38,17 +39,6 @@ public class BankService : IBankService
             response.EnsureSuccessStatusCode();
 
             var bankResponse = await response.Content.ReadFromJsonAsync<BankAuthorisationResponse>();
-
-            var paymentResponse = new PostPaymentResponse
-            {
-                Id = Guid.NewGuid(),
-                Status = bankResponse.Authorized ? PaymentStatus.Authorized : PaymentStatus.Declined,
-                CardNumberLastFour = int.Parse(request.CardNumber[^4..]),
-                ExpiryMonth = request.ExpiryMonth,
-                ExpiryYear = request.ExpiryYear,
-                Currency = request.Currency,
-                Amount = request.Amount
-            };
 
             return bankResponse ?? new BankAuthorisationResponse { Authorized = false };
 

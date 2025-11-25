@@ -131,7 +131,7 @@ namespace PaymentGateway.Api.Tests
         }
 
         [Fact]
-        public async Task HandlesErrorAndThrows()
+        public async Task HandlesErrorsThrown()
         {
             PostPaymentRequest request = new()
             {
